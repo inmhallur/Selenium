@@ -12,10 +12,10 @@ Resolution: Need to spend some time to install the android and ios webdriver and
 
 4. Make all files categorized with hierarchy
 Resolution:
-##library: e.g. DriverWait.class
-##entity: e.g. Customer.class
-##page: e.g. HeaderPage.class, CheckoutMainPage.class ...
-##test case: AddAndRemoveItemFromShopCart
+library: e.g. DriverWait.class
+entity: e.g. Customer.class
+page: e.g. HeaderPage.class, CheckoutMainPage.class ...
+test case: AddAndRemoveItemFromShopCart
 
 5. User has to create different test files for different webdrivers.
 Resolution: Use TestNG.xml to pass browser info and also create BrowserFactory.class to include all the settting on different types of webdrivers. So that the user just need to pass the browser name as parameter to the same test.
