@@ -1,26 +1,15 @@
 package testWebsite;
 
-import java.io.File;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.safari.SafariDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 
-public class AddAndRemoveItemFromShopCart {
+
+public class AddAndRemoveItemTest_Chrome {
 	
 		private WebDriver driver;
 		private String baseUrl;
@@ -39,12 +28,9 @@ public class AddAndRemoveItemFromShopCart {
 		private String zipCode = "94066";
 		
 		@Before
-		public void setUp() throws Exception{			
-			driver = new FirefoxDriver();
-			
-			//System.setProperty("webdriver.chrome.drier", "/Users/shaoruijiang/Downloads/chromedriver.exe");
-			//driver = new ChromeDriver();
-			//driver = new SafariDriver();
+		public void setUp() throws Exception{						
+			System.setProperty("webdriver.chrome.driver", "/Users/shaoruijiang/Downloads/chromedriver.exe");
+			driver = new ChromeDriver();
 			baseUrl = "http://www.walmart.com/";
 			driver.manage().window().maximize();
 			wait = new DriverWait(driver);
@@ -53,7 +39,7 @@ public class AddAndRemoveItemFromShopCart {
 		
 		@Test
 		public void test() throws Exception{
-			
+			//go to walmart.com
 			driver.get(baseUrl);
 			//search item from search section
 			HeaderPage hp = new HeaderPage(driver);
@@ -68,7 +54,7 @@ public class AddAndRemoveItemFromShopCart {
 			shopDetail.addItemToCart();
 			shopDetail.checkOutItems();
 						
-			//login page before checkout
+			//login page before checkout and add customer info
 			Customer customer = new Customer(userName, pwd);
 			customer.setAddress1(address1);
 			customer.setCity(city);
@@ -78,12 +64,13 @@ public class AddAndRemoveItemFromShopCart {
 			login.signIn(customer);
 			
 			//check out page
-			CheckOutMainPage checkout = new CheckOutMainPage(driver);			
+			CheckOutMainPage checkout = new CheckOutMainPage(driver);
+			
+			//go to shopping cart page from checkout page
 			checkout.navToCartPage();
 			ShopCartPage cart = new ShopCartPage(driver);
-			//item is present (
+			//assert item is present
 			cart.assertItemPresent(name);
-			//cart.assertItemPresent(name);
 			//total number of items is correct
 			Assert.assertEquals(totalItems, cart.getTotalItem());
 			cart.goCheckout();
@@ -92,18 +79,15 @@ public class AddAndRemoveItemFromShopCart {
 			checkout = new CheckOutMainPage(driver);
 			//select shipping method
 			checkout.chooseShippingMethod(CheckOutMainPage.ShipMethod.FREE.toString());			
-			//confirm home shipping address selected
-			checkout.selectPreferredAddress(customer);
-			
-			//assert payment section is displayed
+			//select home shipping address and continue
+			checkout.selectPreferredAddress(customer);		
+			//load payment section and assert is displayed
 			checkout.assertPaymentSectionDisplay();
 			
-			//go back to cart page
+			//go back to cart page and remove the item
 			checkout.navToCartPage();
-			//ShopCart cart = new ShopCart(driver);
 			cart = new ShopCartPage(driver);
-			cart.removeItemByName(name);
-			
+			cart.removeItemByName(name);			
 			//assert empty cart
 			Assert.assertEquals(0, cart.getTotalItem());
 			
