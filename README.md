@@ -10,7 +10,7 @@ Resolution: simulate it using JavaScript to fire a mouse hover.
 3. Not be able to run on device browser
 Resolution: Need to spend some time to install the android and ios webdriver and make the test work
 
-4. Make all files categorized with hierarchy
+4. Make all files categorized
 Resolution:
 library: e.g. DriverWait.class
 entity: e.g. Customer.class
@@ -21,7 +21,7 @@ test case: AddAndRemoveItemFromShopCart
 Resolution: Use TestNG.xml to pass browser info and also create BrowserFactory.class to include all the settting on different types of webdrivers. So that the user just need to pass the browser name as parameter to the same test.
 
 
-#Potentail Issue when Running test:
+#Potentail Issues when Running test:
 1. When loading the home page "http://www.walmart.com", randomly showing the popup window for sign-up. Since it
 happens randomely, the test isn't designed to handle it
 Resolution: when loading home page, check if the popup window is showing up, then dismiss it.
